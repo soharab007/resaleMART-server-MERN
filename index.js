@@ -13,12 +13,14 @@ app.use(cors());
 app.use(express.json());
 
 
-
-
-
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.8lhtxek.mongodb.net/?retryWrites=true&w=majority`;
-// console.log(uri);
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ksaovkw.mongodb.net/?retryWrites=true&w=majority`
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+
+
+// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.8lhtxek.mongodb.net/?retryWrites=true&w=majority`;
+// // console.log(uri);
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
 const verifyJwt = (req, res, next) => {
@@ -40,12 +42,12 @@ const verifyJwt = (req, res, next) => {
 
 async function run() {
     try {
-        const productsCollection = client.db("mirrawDb").collection("products");
-        const bookingsCollection = client.db("mirrawDb").collection("bookings");
-        const categoryCollection = client.db("mirrawDb").collection("category");
-        const usersCollection = client.db("mirrawDb").collection("users");
-        const sellerProductsCollection = client.db("mirrawDb").collection("SellerProducts");
-        const advertisedProductsCollection = client.db("mirrawDb").collection("advertised");
+        const productsCollection = client.db("resailMart").collection("products");
+        const bookingsCollection = client.db("resailMart").collection("bookings");
+        const categoryCollection = client.db("resailMart").collection("category");
+        const usersCollection = client.db("resailMart").collection("users");
+        const sellerProductsCollection = client.db("resailMart").collection("SellerProducts");
+        const advertisedProductsCollection = client.db("resailMart").collection("advertised");
 
 
         app.post('/jwt', async (req, res) => {
