@@ -43,10 +43,12 @@ const verifyJwt = (req, res, next) => {
 
 async function run() {
     try {
+        // const productsCollection = client.db("resailMart").collection("myProducts");
         const productsCollection = client.db("resailMart").collection("products");
         const bookingsCollection = client.db("resailMart").collection("bookings");
         const categoryCollection = client.db("resailMart").collection("category");
         const usersCollection = client.db("resailMart").collection("users");
+        // const sellerProductsCollection = client.db("resailMart").collection("myProducts");
         const sellerProductsCollection = client.db("resailMart").collection("SellerProducts");
         const advertisedProductsCollection = client.db("resailMart").collection("advertised");
 
