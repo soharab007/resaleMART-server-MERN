@@ -8,14 +8,16 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 
 
-// middleware ass
+// middleware
 app.use(cors());
 app.use(express.json());
 
 
 
+
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.8lhtxek.mongodb.net/?retryWrites=true&w=majority`;
-console.log(uri);
+// console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 
@@ -36,26 +38,14 @@ const verifyJwt = (req, res, next) => {
     })
 };
 
-
 async function run() {
     try {
-        const productsCollection = client.db("resailMart").collection("Products");
-        const myProductsCollection = client.db("resailMart").collection("myProducts");
-        const bookingsCollection = client.db("resailMart").collection("bookings");
-        const categoryCollection = client.db("resailMart").collection("category");
-        const usersCollection = client.db("resailMart").collection("users");
-        const sellerProductsCollection = client.db("resailMart").collection("SellerProducts");
-        const advertisedProductsCollection = client.db("resailMart").collection("advertised");
-
-        //  
-        // const productsCollection = client.db("mirrawDb").collection("products");
-        // const bookingsCollection = client.db("mirrawDb").collection("bookings");
-        // const categoryCollection = client.db("mirrawDb").collection("category");
-        // const usersCollection = client.db("mirrawDb").collection("users");
-        // const sellerProductsCollection = client.db("mirrawDb").collection("SellerProducts");
-        // const advertisedProductsCollection = client.db("mirrawDb").collection("advertised");
-        // // 
-
+        const productsCollection = client.db("mirrawDb").collection("products");
+        const bookingsCollection = client.db("mirrawDb").collection("bookings");
+        const categoryCollection = client.db("mirrawDb").collection("category");
+        const usersCollection = client.db("mirrawDb").collection("users");
+        const sellerProductsCollection = client.db("mirrawDb").collection("SellerProducts");
+        const advertisedProductsCollection = client.db("mirrawDb").collection("advertised");
 
 
         app.post('/jwt', async (req, res) => {
@@ -63,6 +53,7 @@ async function run() {
             const token = sign(user, process.env.ACCESS_TOKEN, { expiresIn: '1h' });
             res.send({ token });
         });
+
 
         app.get('/category', async (req, res) => {
             const query = {};
@@ -73,18 +64,11 @@ async function run() {
         app.get('/products/:id', async (req, res) => {
             const id = req.params.id;
             let query = { categoryId: parseInt(id) };
-            // const results = await myProductsCollection.find(query).toArray();
             const results = await productsCollection.find(query).toArray();
             res.send(results);
         });
-        // 
-        // the below code return the two products
-        // app.get('/myproducts', async (req, res) => {
-        //     const query = {};
-        //     const product = await myProductsCollection.find(query).toArray();
-        //     res.send(product)
-        // })
-        // 
+
+
         app.put('/report/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: ObjectId(id) };
@@ -110,6 +94,8 @@ async function run() {
             const result = await usersCollection.updateOne(filter, updateDoc, options);
             res.send(result);
         });
+
+
 
         app.post('/bookings', async (req, res) => {
             const booking = req.body;
@@ -138,34 +124,8 @@ async function run() {
             const result = await usersCollection.insertOne(user)
             res.send(result);
         });
-        // from doc portal
-        // app.get('/bookings', verifyJWT, async (req, res) => {
-        //     const email = req.query.email;
-        //     const decodedEmail = req.decoded.email;
 
-        //     if (email !== decodedEmail) {
-        //         return res.status(403).send({ message: 'forbidden access' });
-        //     }
 
-        //     const query = { email: email };
-        //     const bookings = await bookingsCollection.find(query).toArray();
-        //     res.send(bookings);
-        // });
-        // 
-        // app.get('/users', verifyJwt, async (req, res) => {
-        //     const email = req.query.email;
-        //     const decodedEmail = req.decoded.email;
-        //     if (email !== decodedEmail) {
-        //         // if (decodedEmail !== req.query.email) {
-        //         res.status(401).send('theft access');
-        //     };
-        //     const query = { email: email };
-        //     // const query = { email: decodedEmail };
-        //     const results = await usersCollection.findOne(query);
-        //     res.send(results);
-        // });
-
-        // comment for try below
         app.get('/users', verifyJwt, async (req, res) => {
             const decodedEmail = req.decoded.email;
             if (decodedEmail !== req.query.email) {
@@ -175,7 +135,7 @@ async function run() {
             const results = await usersCollection.findOne(query);
             res.send(results);
         });
-        // 
+
 
         app.post('/myProducts', async (req, res) => {
             const ProductInfo = req.body;
@@ -264,7 +224,6 @@ async function run() {
     }
 }
 run().catch(error => console.log(error));
-
 
 
 
