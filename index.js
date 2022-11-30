@@ -12,8 +12,6 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// mirrawDB
-// 2Kp6PXsbgCvTuNw4
 
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.8lhtxek.mongodb.net/?retryWrites=true&w=majority`;
